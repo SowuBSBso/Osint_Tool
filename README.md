@@ -44,3 +44,5 @@ Ce projet est sous licence MIT.
 Contact
 -------
 Pour toute question, contactez-moi via discord : 452213119.
+
+<img width="1704" height="845" alt="Capture d'écran 2025-07-29 193228" src="https://github.com/user-attachments/assets/a1b97875-c0c0-41da-b529-4d54c4342304" />
