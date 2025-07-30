@@ -45,4 +45,5 @@ Contact
 -------
 Pour toute question, contactez-moi via discord : 452213119.
 
-<img width="1704" height="845" alt="Capture d'écran 2025-07-29 193228" src="https://github.com/user-attachments/assets/a1b97875-c0c0-41da-b529-4d54c4342304" />
+<img width="1718" height="850" alt="Capture d'écran 2025-07-30 152825" src="https://github.com/user-attachments/assets/a173cb10-b6fe-4258-8422-9acfaf562bc1" />
+
