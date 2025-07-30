@@ -1,5 +1,6 @@
 from Config.Util import *
 from Config.Config import *
+from datetime import datetime
 
 import sys
 import os
@@ -205,7 +206,7 @@ def dox_create():
                 region_phone = geocoder.description_for_number(parsed_number, "fr")
                 timezones = timezone.time_zones_for_number(parsed_number)
                 timezone_phone = timezones[0] if timezones else None
-            except:
+            except Exception as e:
                 operator_phone = "None"
                 type_number_phone = "None"
                 country_phone = "None"
@@ -218,7 +219,7 @@ def dox_create():
             try:
                 response = requests.get(f"https://{website}/api/ip/ip={ip}")
                 api = response.json()
-            except:
+            except Exception as e:
                 api = {}
 
             isp_ip = api.get("isp", "None")
@@ -231,7 +232,7 @@ def dox_create():
             try:
                 from datetime import datetime, timezone
                 user = requests.get('https://discord.com/api/v8/users/@me', headers={'Authorization': token}).json()
-            except:
+            except Exception as e:
                 user = {}
 
             username_discord = f"{user.get('username', 'None')}#{user.get('discriminator', 'None')}"
@@ -243,12 +244,12 @@ def dox_create():
                 r = requests.get(avatar_url_discord)
                 if r.status_code != 200:
                     avatar_url_discord = f"https://cdn.discordapp.com/avatars/{user_id_discord}/{user['avatar']}.png"
-            except:
+            except Exception as e:
                 avatar_url_discord = "None"
 
             try:
                 created_at_discord = datetime.fromtimestamp(((int(user_id_discord) >> 22) + 1420070400000) / 1000, timezone.utc)
-            except:
+            except Exception as e:
                 created_at_discord = "None"
 
             email_discord = user.get('email', 'None')
@@ -342,33 +343,148 @@ def dox_create():
 
         print(f"\n{BEFORE + current_time_hour() + AFTER} {INFO}{yellow} Bank Information:")
         credit_card = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Credit Card   : {reset}")
-        bank_card = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Bank Card     : {reset}")
-        iban = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} IBAN          : {reset}")
+        bank_card =   input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Bank Card     : {reset}")
+        iban =        input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} IBAN          : {reset}")
 
         print(f"\n{BEFORE + current_time_hour() + AFTER} {INFO}{yellow} Bank Location:")
         bank_country = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Bank Country  : {reset}")
-        bank_name = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Bank Name     : {reset}")
+        bank_name =    input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Bank Name     : {reset}")
 
         print(f"\n{BEFORE + current_time_hour() + AFTER} {INFO}{yellow} Socials:")
         facebook = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Facebook      : {reset}")
-        twitter = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Twitter       : {reset}")
+        twitter =  input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Twitter       : {reset}")
         snapchat = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Snapchat      : {reset}")
-        tiktok = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Tiktok        : {reset}")
+        tiktok =   input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Tiktok        : {reset}")
         linkedin = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Linkedin      : {reset}")
 
         print(f"\n{BEFORE + current_time_hour() + AFTER} {INFO}{yellow} Other Information:")
         ip_local_pc = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Ip Local PC   : {reset}")
         password_pc = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Password      : {reset}")
-        login_pc = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Login         : {reset}")
-        mac_pc2 = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Mac PC       : {reset}")
-        ssn_pc = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} SSN           : {reset}")
+        login_pc =    input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Login         : {reset}")
+        mac_pc2 =     input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} Mac PC       : {reset}")
+        ssn_pc =      input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} SSN           : {reset}")
 
         print(f"\n{BEFORE + current_time_hour() + AFTER} {INFO}{yellow} Social Security Number:")
         ssn_number = input(f"{BEFORE + current_time_hour() + AFTER} {INPUT} SSN Number    : {reset}")
 
+        # Sauvegarde dans un fichier dans dossier Dox
+        if not os.path.exists("Dox"):
+            os.makedirs("Dox")
+
+        filename = f"Dox/dox_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+
+        content = f"""
+Doxed By      : {by}
+Reason        : {reason}
+First Pseudo  : {pseudo1}
+Second Pseudo : {pseudo2}
+
+Discord Information:
+Token         : {token}
+Username      : {username_discord}
+Display Name  : {display_name_discord}
+Id            : {user_id_discord}
+Avatar        : {avatar_url_discord}
+Created At    : {created_at_discord}
+Email         : {email_discord}
+Phone         : {phone_discord}
+Nitro         : {nitro_discord}
+Friends       : {friends_discord}
+Gift Codes    : {gift_codes_discord}
+MFA           : {mfa_discord}
+
+Ip Information:
+Ip Publique   : {ip_public}
+Ip Local      : {ip_local}
+Ipv6          : {ipv6}
+VPN           : {vpn_pc}
+ISP           : {isp_ip}
+Org           : {org_ip}
+AS            : {as_ip}
+
+Pc Information:
+Name          : {name_pc}
+Username      : {username_pcc}
+Display Name  : {displayname_pc}
+Platform      : {platform_pc}
+Exploitation  : {exploitation_pc}
+Windows Key   : {windowskey_pc}
+MAC Address   : {mac_pc}
+HWID Address  : {hwid_pc}
+CPU           : {cpu_pc}
+GPU           : {gpu_pc}
+RAM           : {ram_pc}
+Disk          : {disk_pc}
+Screen Main   : {mainscreen_pc}
+Screen Sec    : {secscreen_pc}
+
+Number Information:
+Phone Number  : {phone_number}
+Brand         : {brand_phone}
+Operator      : {operator_phone}
+Type Number   : {type_number_phone}
+Country       : {country_phone}
+Region        : {region_phone}
+Timezone      : {timezone_phone}
+
+Personal Information:
+Gender        : {gender}
+Last Name     : {last_name}
+First Name    : {first_name}
+Age           : {age}
+Mother        : {mother}
+Father        : {father}
+Brother       : {brother}
+Sister        : {sister}
+
+Loc Information:
+Continent     : {continent}
+Country       : {country}
+Region        : {region}
+Postal Code   : {postal_code}
+City          : {city}
+Street        : {street}
+Street Number : {street_nb}
+Latitude      : {latitude}
+Longitude     : {longitude}
+
+Bank Information:
+Credit Card   : {credit_card}
+Bank Card     : {bank_card}
+IBAN          : {iban}
+
+Bank Location:
+Bank Country  : {bank_country}
+Bank Name     : {bank_name}
+
+Socials:
+Facebook      : {facebook}
+Twitter       : {twitter}
+Snapchat      : {snapchat}
+Tiktok        : {tiktok}
+Linkedin      : {linkedin}
+
+Other Information:
+Ip Local PC   : {ip_local_pc}
+Password      : {password_pc}
+Login         : {login_pc}
+Mac PC       : {mac_pc2}
+SSN           : {ssn_pc}
+
+Social Security Number:
+SSN Number    : {ssn_number}
+"""
+
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(content)
+
+        print(f"\n{BEFORE + current_time_hour() + AFTER} {INFO} Informations sauvegardées dans {filename}")
+
         pause()
+
     except Exception as e:
-        error_and_continue(e)
+        print(f"\n{BEFORE + current_time_hour() + AFTER} {ERROR} {e}")
+        pause()
 
 def ip_generator():
     Title("Ip Generator")
@@ -809,16 +925,16 @@ def email_tracker_ui():
 def PrintHeader():
     print(f"""
 {cyan}
- █    ██  ██▀███   █    ██  ███▄ ▄███▓ ▄▄▄         ▓█████▄ ▓█████  ██▒   █▓ ██▓ ▄████▄  ▓█████ 
- ██  ▓██▒▓██ ▒ ██▒ ██  ▓██▒▓██▒▀█▀ ██▒▒████▄       ▒██▀ ██▌▓█   ▀ ▓██░   █▒▓██▒▒██▀ ▀█  ▓█   ▀ 
-▓██  ▒██░▓██ ░▄█ ▒▓██  ▒██░▓██    ▓██░▒██  ▀█▄     ░██   █▌▒███    ▓██  █▒░▒██▒▒▓█    ▄ ▒███   
-▓▓█  ░██░▒██▀▀█▄  ▓▓█  ░██░▒██    ▒██ ░██▄▄▄▄██    ░▓█▄   ▌▒▓█  ▄   ▒██ █░░░██░▒▓▓▄ ▄██▒▒▓█  ▄ 
-▒▒█████▓ ░██▓ ▒██▒▒▒█████▓ ▒██▒   ░██▒ ▓█   ▓██▒   ░▒████▓ ░▒████▒   ▒▀█░  ░██░▒ ▓███▀ ░░▒████▒
-░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░░▒▓▒ ▒ ▒ ░ ▒░   ░  ░ ▒▒   ▓▒█░    ▒▒▓  ▒ ░░ ▒░ ░   ░ ▐░  ░▓  ░ ░▒ ▒  ░░░ ▒░ ░
-░░▒░ ░ ░   ░▒ ░ ▒░░░▒░ ░ ░ ░  ░      ░  ▒   ▒▒ ░    ░ ▒  ▒  ░ ░  ░   ░ ░░   ▒ ░  ░  ▒    ░ ░  ░
- ░░░ ░ ░   ░░   ░  ░░░ ░ ░ ░      ░     ░   ▒       ░ ░  ░    ░        ░░   ▒ ░░           ░   
-   ░        ░        ░            ░         ░  ░      ░       ░  ░      ░   ░  ░ ░         ░  ░
-                                                    ░                  ░       ░         
+ ███▄ ▄███▓ ██▀███     ▓█████▄  ▒█████  ▒██   ██▒▒██   ██▒ ██▓ ███▄    █   ▄████ 
+▓██▒▀█▀ ██▒▓██ ▒ ██▒   ▒██▀ ██▌▒██▒  ██▒▒▒ █ █ ▒░▒▒ █ █ ▒░▓██▒ ██ ▀█   █  ██▒ ▀█▒
+▓██    ▓██░▓██ ░▄█ ▒   ░██   █▌▒██░  ██▒░░  █   ░░░  █   ░▒██▒▓██  ▀█ ██▒▒██░▄▄▄░
+▒██    ▒██ ▒██▀▀█▄     ░▓█▄   ▌▒██   ██░ ░ █ █ ▒  ░ █ █ ▒ ░██░▓██▒  ▐▌██▒░▓█  ██▓
+▒██▒   ░██▒░██▓ ▒██▒   ░▒████▓ ░ ████▓▒░▒██▒ ▒██▒▒██▒ ▒██▒░██░▒██░   ▓██░░▒▓███▀▒
+░ ▒░   ░  ░░ ▒▓ ░▒▓░    ▒▒▓  ▒ ░ ▒░▒░▒░ ▒▒ ░ ░▓ ░▒▒ ░ ░▓ ░░▓  ░ ▒░   ▒ ▒  ░▒   ▒ 
+░  ░      ░  ░▒ ░ ▒░    ░ ▒  ▒   ░ ▒ ▒░ ░░   ░▒ ░░░   ░▒ ░ ▒ ░░ ░░   ░ ▒░  ░   ░ 
+░      ░     ░░   ░     ░ ░  ░ ░ ░ ░ ▒   ░    ░   ░    ░   ▒ ░   ░   ░ ░ ░ ░   ░ 
+       ░      ░           ░        ░ ░   ░    ░   ░    ░   ░           ░       ░ 
+                        ░                                                           
 {reset}
 """)
 
