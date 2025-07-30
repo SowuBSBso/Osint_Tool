@@ -3,7 +3,7 @@ Mr Doxxing - OSINT Tool
 
 Description
 -----------
-Uruma Device est un outil OSINT (Open Source Intelligence) multifonction destiné à rechercher des informations sur des adresses IP, des ports, des emails, et des numéros de téléphone à partir de sources publiques. Il permet notamment :
+Mr Doxxing est un outil OSINT (Open Source Intelligence) multifonction destiné à rechercher des informations sur des adresses IP, des ports, des emails, et des numéros de téléphone à partir de sources publiques. Il permet notamment :
 
 - Lookup d’adresse IP (localisation, ISP, etc.)
 - Scan des ports IP communs
