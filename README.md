@@ -1,4 +1,4 @@
-Uruma Device - OSINT Tool
+Mr Doxxing - OSINT Tool
 =========================
 
 Description
